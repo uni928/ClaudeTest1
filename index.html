@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Editor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        #editor {
+            width: 100%;
+            height: 300px;
+            margin-bottom: 10px;
+        }
+        .button-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-bottom: 10px;
+        }
+        button {
+            padding: 5px 10px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <h1>HTML Editor</h1>
+    <textarea id="editor">
+<html>
+<head>
+  <title></title>
+  <meta name="description" content=""/>
+  <style>
+    
+  </style>
+</head>
+<body>
+  
+  <script>
+    
+    function Func1() {
+        
+    }
+  </script>
+</body>
+</html>
+    </textarea>
+    <div class="button-container">
+        <button onclick="insertTag('h1')">h1</button>
+        <button onclick="insertTag('p')">p</button>
+        <button onclick="insertTag('div')">div</button>
+        <button onclick="insertTag('span')">span</button>
+        <button onclick="insertTag('a')">a</button>
+        <button onclick="insertTag('img')">img</button>
+        <button onclick="insertTag('ul')">ul</button>
+        <button onclick="insertTag('ol')">ol</button>
+        <button onclick="insertTag('li')">li</button>
+        <button onclick="insertTag('table')">table</button>
+        <button onclick="insertTag('form')">form</button>
+        <button onclick="insertTag('input')">input</button>
+        <button onclick="insertTag('button')">button</button>
+        <button onclick="insertTag('script')">script</button>
+        <button onclick="insertTag('style')">style</button>
+    </div>
+    <button onclick="previewHTML()">Preview HTML</button>
+    <button onclick="downloadHTML()">Download HTML</button>
+    <div id="preview"></div>
+
+    <script>
+        function insertTag(tag) {
+            const editor = document.getElementById('editor');
+            const start = editor.selectionStart;
+            const end = editor.selectionEnd;
+            const text = editor.value;
+            const beforeText = text.substring(0, start);
+            const afterText = text.substring(end);
+
+            if (tag === 'img' || tag === 'input') {
+                editor.value = beforeText + '<' + tag + ' />' + afterText;
+            } else {
+                editor.value = beforeText + '<' + tag + '></' + tag + '>' + afterText;
+            }
+
+            editor.focus();
+            editor.selectionStart = start + tag.length + 2;
+            editor.selectionEnd = start + tag.length + 2;
+        }
+
+        function previewHTML() {
+            const editor = document.getElementById('editor');
+            const preview = document.getElementById('preview');
+            preview.innerHTML = editor.value;
+        }
+
+        function downloadHTML() {
+            const editor = document.getElementById('editor');
+            const content = editor.value;
+            const blob = new Blob([content], { type: 'text/html' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'index.html';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+    </script>
+</body>
+</html>
